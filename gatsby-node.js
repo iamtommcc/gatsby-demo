@@ -12,9 +12,7 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
       ) {
         edges {
           node {
-            frontmatter {
-              path
-            }
+            fileAbsolutePath
           }
         }
       }
@@ -25,11 +23,12 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
       }
 
       result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-        console.log(node);
         createPage({
-          path: node.frontmatter.path,
+          path: '/blog/' + node.fileAbsolutePath.split('/').pop().split('.').shift(),
           component: blogPostTemplate,
-          context: {}, // additional data can be passed via context
+          context: {
+            fileAbsolutePath: node.fileAbsolutePath
+          }, // additional data can be passed via context
         });
       });
     });

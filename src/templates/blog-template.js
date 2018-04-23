@@ -6,7 +6,9 @@ export default function Template({
   const { markdownRemark } = data; // data.markdownRemark holds our post data
   const { frontmatter, html } = markdownRemark;
   return (
-    <div>
+    <div style={{
+      maxWidth: '850px', margin: '0 auto', fontFamily: '-apple-system, BlinkMacSystemFont', fontSize: '28px'
+    }}>
       <div>
         <h1>{frontmatter.title}</h1>
         <h2>{frontmatter.date}</h2>
@@ -14,17 +16,16 @@ export default function Template({
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
-    </div>
+    </div >
   );
 }
 
 export const pageQuery = graphql`
-  query BlogPostByPath($path: String!) {
-    markdownRemark(frontmatter: { path: { eq: $path } }) {
+  query BlogPostByPath($fileAbsolutePath: String!) {
+    markdownRemark(fileAbsolutePath: { eq: $fileAbsolutePath }) {
       html
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
-        path
         title
       }
     }
